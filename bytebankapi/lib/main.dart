@@ -1,4 +1,5 @@
-import 'package:bytebankapi/screens/dashboard.dart';
+import 'package:bytebankapi/screens/counter.dart';
+import 'package:bytebankapi/widgets/theme.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,15 +11,8 @@ class BytebankApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.green[900],
-        accentColor: Colors.blueAccent[700],
-        buttonTheme: ButtonThemeData(
-          buttonColor: Colors.blueAccent[700],
-          textTheme: ButtonTextTheme.primary,
-        ),
-      ),
-      home: Dashboard(),
+      theme: bytebankTheme,
+      home: CounterContainer(),
     );
   }
 }
