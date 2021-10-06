@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+//exemplo de contador utilizando bloc com duas variações
+
 //vai encapsular os comportamentos ligados ao nosso estado
 //o estado é um int
 //CounterCubit é o gerenciador do estado
@@ -34,9 +36,10 @@ class CounterView extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Contador'),
+        title: const Text('Counter'),
       ),
       //builder que é notificado
+      //uma forma de usar bloc
       body: Center(child: BlocBuilder<CounterCubit, int>(
         builder: (context, state) {
           //vai buildar algo de acordo com o state, ou seja, o build é notificado quando deve ser rebuildado
@@ -52,6 +55,7 @@ class CounterView extends StatelessWidget {
         children: [
           FloatingActionButton(
             //context.read para acessar o bloc que quero notificar através de algum evento
+            //outra forma de usar bloc
             onPressed: () => context.read<CounterCubit>().increment(),
             child: const Icon(Icons.add),
           ),
