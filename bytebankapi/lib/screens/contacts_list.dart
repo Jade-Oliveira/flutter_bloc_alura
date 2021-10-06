@@ -1,9 +1,19 @@
 import 'package:bytebankapi/database/dao/contact_dao.dart';
 import 'package:bytebankapi/models/contact.dart';
 import 'package:bytebankapi/screens/transaction_form.dart';
+import 'package:bytebankapi/widgets/container.dart';
 import 'package:bytebankapi/widgets/progress.dart';
 import 'contact_form.dart';
 import 'package:flutter/material.dart';
+
+class ContactsListContainer extends BlocContainer {
+  const ContactsListContainer({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ContactsList();
+  }
+}
 
 class ContactsList extends StatefulWidget {
   @override
@@ -28,7 +38,6 @@ class _ContactsListState extends State<ContactsList> {
               break;
             case ConnectionState.waiting:
               return Progress();
-
             case ConnectionState.active:
               break;
             case ConnectionState.done:

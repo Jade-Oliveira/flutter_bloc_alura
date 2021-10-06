@@ -1,15 +1,10 @@
+import 'package:bytebankapi/models/name.dart';
+import 'package:bytebankapi/widgets/container.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
 //construtor padrão que recebe um estado e passa para frente
-class NameCubit extends Cubit<String> {
-  NameCubit(String name) : super(name);
-
-  //recebe um nome novo e emite um novo estado
-  void change(String name) => emit(name);
-}
-
-class NameContainer extends StatelessWidget {
+class NameContainer extends BlocContainer {
   const NameContainer({Key? key}) : super(key: key);
 
   @override

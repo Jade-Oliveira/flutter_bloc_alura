@@ -1,11 +1,13 @@
+import 'package:bytebankapi/models/name.dart';
 import 'package:bytebankapi/screens/name.dart';
 import 'package:bytebankapi/screens/transactions_list.dart';
+import 'package:bytebankapi/widgets/container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'contacts_list.dart';
 
-class DashboardContainer extends StatelessWidget {
+class DashboardContainer extends BlocContainer {
   const DashboardContainer({Key? key}) : super(key: key);
 
   @override
@@ -77,11 +79,8 @@ class DashboardView extends StatelessWidget {
 
   //função para navegar para a lista de contatos
   void _showContactsList(BuildContext blocContext) {
-    Navigator.of(blocContext).push(
-      MaterialPageRoute(
-        builder: (context) => ContactsList(),
-      ),
-    );
+    //atualisei a lista de contatos para bloc
+    push(blocContext, ContactsListContainer());
   }
 
   void _showChangeName(BuildContext blocContext) {

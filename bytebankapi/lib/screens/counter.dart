@@ -1,3 +1,4 @@
+import 'package:bytebankapi/widgets/container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,7 +17,7 @@ class CounterCubit extends Cubit<int> {
   //nesse caso o gerenciador de estado é uma classe com dois comportamentos diferentes, um increment e um decrement
 }
 
-class CounterContainer extends StatelessWidget {
+class CounterContainer extends BlocContainer {
   @override
   Widget build(BuildContext context) {
     //provendo um cubit para os filhos
