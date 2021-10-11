@@ -86,7 +86,6 @@ class DashboardView extends StatelessWidget {
   void _showChangeName(BuildContext blocContext) {
     Navigator.of(blocContext).push(
       MaterialPageRoute(
-        //aqui rolou um problema de que o context principal da aplicação não tá sendo passado para frente quando cria o MaterialPageRoute
         //extrai o NameCubit para eu conseguir utilizar nessa rota
         builder: (context) => BlocProvider.value(
           value: BlocProvider.of<NameCubit>(blocContext),

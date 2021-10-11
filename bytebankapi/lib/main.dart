@@ -11,8 +11,6 @@ void main() {
 class LogObserver extends BlocObserver {
   @override
   //recebe um cubit e a mudança ele delega para o super
-  //não parece estar conseguindo acessar o currentState, só o nextState estado
-  //o problema parece ser na função change
   void onChange(BlocBase bloc, Change change) {
     print('${bloc.runtimeType} > $change');
     super.onChange(bloc, change);

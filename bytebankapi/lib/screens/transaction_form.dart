@@ -146,18 +146,17 @@ class _BasicForm extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
-                child: TextField(
+                child: TextFormField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
                   //dando problema porque esse setState servia para atualizar o estado quando o valor é preenchido
                   //não tá reconhecendo o valor como preenchido e dando erro na condição de habilitar botão
-                  // onChanged: (_) => setState(() {}),
-                  //uso um listener??
+                  validator: (_) =>
+                      _valueController.text == '' ? 'Insira um valor' : null,
                   controller: _valueController,
                   style: TextStyle(fontSize: 24.0),
                   decoration: InputDecoration(
-                      labelText: 'Value',
-                      errorText: _valueController.text == ''
-                          ? 'Insira um valor'
-                          : null),
+                    labelText: 'Value',
+                  ),
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                 ),
               ),
@@ -167,9 +166,10 @@ class _BasicForm extends StatelessWidget {
                   width: double.maxFinite,
                   child: ElevatedButton(
                     child: Text('Transfer'),
+                    //a ideia é usar o validateValue aqui
                     onPressed: _valueController.text != ''
                         ? () {
-                            //pega o valor do textField por meio do _valueController e o contato pelo stateful widget
+                            //pega o valor do textField por meio do _valueController
                             final double value =
                                 double.parse(_valueController.text);
                             final transactionCreated = Transaction(
