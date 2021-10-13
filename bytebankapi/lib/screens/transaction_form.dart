@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bytebankapi/http/webclients/transaction_webclient.dart';
 import 'package:bytebankapi/models/contact.dart';
 import 'package:bytebankapi/models/transaction.dart';
+import 'package:bytebankapi/models/value.dart';
 import 'package:bytebankapi/widgets/container.dart';
 import 'package:bytebankapi/widgets/error.dart';
 import 'package:bytebankapi/widgets/progress.dart';
@@ -72,10 +73,11 @@ class TransactionFormContainer extends BlocContainer {
   TransactionFormContainer(this._contact);
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<TransactionFormCubit>(
-        create: (BuildContext context) {
-          return TransactionFormCubit();
-        },
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => TransactionFormCubit()),
+          BlocProvider(create: (_) => ValueCubit()),
+        ],
         child: BlocListener<TransactionFormCubit, TransactionFormState>(
           listener: (BuildContext context, state) {
             if (state is SentState) {
@@ -118,6 +120,11 @@ class _BasicForm extends StatelessWidget {
   _BasicForm(this._contact);
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<ValueCubit>();
+
+    //substitui o blocBuilder
+    final state = context.watch<ValueCubit>().state;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('New transaction'),
@@ -147,11 +154,12 @@ class _BasicForm extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: TextFormField(
+                  onChanged: bloc.validateValue,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  //dando problema porque esse setState servia para atualizar o estado quando o valor é preenchido
+                  //dando problema porque o setState servia para atualizar o estado quando o valor é preenchido
                   //não tá reconhecendo o valor como preenchido e dando erro na condição de habilitar botão
                   validator: (_) =>
-                      _valueController.text == '' ? 'Insira um valor' : null,
+                      _valueController.text.isEmpty ? 'Insira um valor' : null,
                   controller: _valueController,
                   style: TextStyle(fontSize: 24.0),
                   decoration: InputDecoration(
@@ -163,41 +171,40 @@ class _BasicForm extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: SizedBox(
-                  width: double.maxFinite,
-                  child: ElevatedButton(
-                    child: Text('Transfer'),
-                    //a ideia é usar o validateValue aqui
-                    onPressed: _valueController.text != ''
-                        ? () {
-                            //pega o valor do textField por meio do _valueController
-                            final double value =
-                                double.parse(_valueController.text);
-                            final transactionCreated = Transaction(
-                              transactionId,
-                              value,
-                              _contact,
-                            );
-                            showDialog(
-                                context: context,
-                                //nome diferente para o context do builder para ter certeza que vai executar o contexto correto
-                                builder: (contextDialog) {
-                                  return TransactionAuthDialog(
-                                    onConfirm: (String password) {
-                                      //executa o envio da transação
-                                      BlocProvider.of<TransactionFormCubit>(
-                                              context)
-                                          .save(
-                                        transactionCreated,
-                                        password,
-                                        context,
-                                      );
-                                    },
-                                  );
-                                });
-                          }
-                        : null,
-                  ),
-                ),
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      child: Text('Transfer'),
+                      //a ideia é usar o validateValue aqui
+                      onPressed: state
+                          ? () {
+                              //pega o valor do textField por meio do _valueController
+                              final double value =
+                                  double.parse(_valueController.text);
+                              final transactionCreated = Transaction(
+                                transactionId,
+                                value,
+                                _contact,
+                              );
+                              showDialog(
+                                  context: context,
+                                  //nome diferente para o context do builder para ter certeza que vai executar o contexto correto
+                                  builder: (contextDialog) {
+                                    return TransactionAuthDialog(
+                                      onConfirm: (String password) {
+                                        //executa o envio da transação
+                                        BlocProvider.of<TransactionFormCubit>(
+                                                context)
+                                            .save(
+                                          transactionCreated,
+                                          password,
+                                          context,
+                                        );
+                                      },
+                                    );
+                                  });
+                            }
+                          : null,
+                    )),
               )
             ],
           ),

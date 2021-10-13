@@ -1,18 +1,11 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-//o estado é uma única String
-//poderia ser um perfil com diversos valores
-class ValueCubit extends Cubit<double> {
+class ValueCubit extends Cubit<bool> {
   //estado inicial seria 0.0
-  ValueCubit(double value) : super(0.0);
+  ValueCubit() : super(false);
 
   //fazer função de validação
-  void addValue(double value) => emit(value);
-
-  bool validateValue(value) {
-    if (value != null) {
-      return true;
-    }
-    return false;
+  void validateValue(String value) {
+    emit(value.isNotEmpty);
   }
 }
