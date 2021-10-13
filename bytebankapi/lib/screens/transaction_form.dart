@@ -154,13 +154,14 @@ class _BasicForm extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 16.0),
                 child: TextFormField(
+                  //acesso a função que criei no Cubit para validação do campo
                   onChanged: bloc.validateValue,
+                  //essa função de autoValidate reconhece o input do usuário
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  //dando problema porque o setState servia para atualizar o estado quando o valor é preenchido
-                  //não tá reconhecendo o valor como preenchido e dando erro na condição de habilitar botão
+                  controller: _valueController,
+                  //validação se estiver vazio
                   validator: (_) =>
                       _valueController.text.isEmpty ? 'Insira um valor' : null,
-                  controller: _valueController,
                   style: TextStyle(fontSize: 24.0),
                   decoration: InputDecoration(
                     labelText: 'Value',
@@ -174,7 +175,7 @@ class _BasicForm extends StatelessWidget {
                     width: double.maxFinite,
                     child: ElevatedButton(
                       child: Text('Transfer'),
-                      //a ideia é usar o validateValue aqui
+                      //usar o state que criamos por meio do watch aqui vai verificar se ele é true e habilitar o botão
                       onPressed: state
                           ? () {
                               //pega o valor do textField por meio do _valueController
